@@ -19,7 +19,7 @@ module.exports = [
     }
   },
   {
-    method: 'GET',
+    method: ['GET', 'POST'],
     path: '/auth/status',
     handler: Auth.status,
     config: {
