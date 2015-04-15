@@ -6,7 +6,8 @@ exports.register = function (Server, options, next) {
   var createSession = function (request) {
     var queryToken = request.query.token;
     var payloadToken = request.payload ? request.payload.token : false;
-    var token = queryToken || payloadToken || '';
+    var headerToken = request.headers.token || false;
+    var token = queryToken || payloadToken || headerToken || '';
     return new SessionBase(token);
   };
 
