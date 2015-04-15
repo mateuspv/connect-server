@@ -15,6 +15,9 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
     },
     Like: {
       create: it('Like', 'create')
+    },
+    User: {
+      current: it('User', 'current')
     }
   };
 };

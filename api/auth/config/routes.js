@@ -1,5 +1,12 @@
 var Joi = require('joi');
 var Auth = require('../handlers/auth');
+var withToken = {
+  validate: {
+    query: {
+      token: Joi.string().min(10)
+    }
+  }
+};
 
 module.exports = [
   {
@@ -22,13 +29,12 @@ module.exports = [
     method: ['GET', 'POST'],
     path: '/auth/status',
     handler: Auth.status,
-    config: {
-      validate: {
-        query: {
-          token: Joi.string().min(10)
-        }
-      }
-    }
+    config: withToken
+  },
+  {
+    method: 'GET',
+    path: '/auth/user',
+    handler: Auth.user,
   },
   {
     method: 'GET',

@@ -3,6 +3,7 @@ var merge = Hoek.merge;
 var TokenBuilder = require('../../../helpers/token-builder');
 var SessionBase = require('../helpers/session');
 var isAuth = require('../helpers/is-auth');
+var Connect = require('../../../connect/index');
 
 exports.status = function (request, reply) {
   var token = request.query.token;
@@ -39,6 +40,22 @@ exports.authentication = function (request, reply) {
       reply({ token: token });
     });
 };
+
+exports.user = function (request, reply) {
+  var token = request.query.token;
+  TokenBuilder.verify(token)
+    .then(function(session) {
+      var Twitter = new Connect(['twitter'], session);
+      Twitter.User.current()
+        .then(function(user) {
+          reply.view('auth/user', {user: user[0]})
+        });
+    })
+    .catch(function(err) {
+      reply({err: err});
+    });
+};
+
 
 var buildNetworkStatus = function (networkName, session) {
   var result = {};
