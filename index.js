@@ -4,7 +4,10 @@ var API = require('./api/index');
 var Server = new Hapi.Server({
   connections: {
     routes: {
-      cors: true
+      cors: {
+      	origin: ['*'],
+      	additionalHeaders: ['token']
+      }
     }
   }
 });
