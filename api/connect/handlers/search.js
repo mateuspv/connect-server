@@ -9,6 +9,6 @@ exports.query = handler(function (connect, request, reply) {
 		.then(function (result) {
 			var facebook = result[0];
 			var twitter = Formater.twitter(result[1]);
-			reply(twitter);
+			reply({search: twitter});
 		});
 });
