@@ -18,7 +18,7 @@ var Post = exports.Post = {};
 Post.facebook = map(function(post) {
   return {
     id: post.id,
-    user_image: 'http://graph.facebook.com/' + post.id + '/picture',
+    user_image: 'http://graph.facebook.com/' + post.from.id + '/picture',
     network: 'facebook',
     video: post.source || '',
     image: post.image || '',
@@ -59,8 +59,29 @@ Search.twitter = function (posts) {
 
 var Profile = exports.Profile = {};
 
+{
+  "id": "534393527", 
+  "first_name": "Paulo", 
+  "gender": "male", 
+  "last_name": "Ragonha", 
+  "link": "http://www.facebook.com/534393527", 
+  "locale": "en_US", 
+  "name": "Paulo Ragonha", 
+  "updated_time": "2014-04-12T23:16:52+0000"
+}
+
+Profile.facebook = function (profile) {  
+    return {
+        id: profile.id,
+        name: profile.name,
+        user_image: 'http://graph.facebook.com/' + profile.id + '/picture',,
+        network: 'facebook'
+    };
+};
+
 Profile.twitter = function (profile) {  
     return {
+        id: profile.id_str
         name: profile.name,
         user_image: profile.profile_image_url_https,
         description: profile.description,
