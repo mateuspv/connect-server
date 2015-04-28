@@ -64,14 +64,14 @@ Profile.facebook = function (profile) {
     return {
         id: profile.id,
         name: profile.name,
-        user_image: 'http://graph.facebook.com/' + profile.id + '/picture',,
+        user_image: 'http://graph.facebook.com/' + profile.id + '/picture',
         network: 'facebook'
     };
 };
 
 Profile.twitter = function (profile) {  
     return {
-        id: profile.id_str
+        id: profile.id_str,
         name: profile.name,
         user_image: profile.profile_image_url_https,
         description: profile.description,
