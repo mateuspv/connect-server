@@ -59,16 +59,6 @@ Search.twitter = function (posts) {
 
 var Profile = exports.Profile = {};
 
-{
-  "id": "534393527", 
-  "first_name": "Paulo", 
-  "gender": "male", 
-  "last_name": "Ragonha", 
-  "link": "http://www.facebook.com/534393527", 
-  "locale": "en_US", 
-  "name": "Paulo Ragonha", 
-  "updated_time": "2014-04-12T23:16:52+0000"
-}
 
 Profile.facebook = function (profile) {  
     return {
