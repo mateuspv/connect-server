@@ -22,6 +22,9 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
     },
     Search: {
       query: it('Search', 'query')
+    },
+    Profile: {
+      get: it('Profile', 'get')
     }
   };
 };

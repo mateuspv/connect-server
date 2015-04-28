@@ -8,7 +8,7 @@ module.exports = {
 		}
 	},
 	User: {
-		current: function(Twitter, options) {
+		current: function (Twitter, options) {
 			return Twitter.request({url: 'account/verify_credentials'});
 		}
 	},
@@ -17,5 +17,10 @@ module.exports = {
 			var query = {q: options};
 			return Twitter.request({url: 'search/tweets', options: query});
 		}
+  	},
+  	Profile: {
+  		get: function (Twitter, id) {
+			return Twitter.request({url: 'users/show', options: {'user_id': id}});
+  		}
   	}
 };

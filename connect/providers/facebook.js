@@ -29,7 +29,6 @@ Facebook.prototype.request = function (req) {
   var method = req.method || 'GET';
   var options = {'access_token': self._token};
   var fields = req.options || {};
-
   merge(options, fields);
 
   return new Promise(function(resolve, reject) {

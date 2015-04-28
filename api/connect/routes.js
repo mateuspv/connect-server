@@ -2,6 +2,7 @@ var Joi = require('joi');
 
 var Post = require('./handlers/post');
 var Search = require('./handlers/search');
+var Profile = require('./handlers/profile');
 
 module.exports = [
   {
@@ -21,8 +22,21 @@ module.exports = [
     config: {
       validate: {
         query: {
-          q: Joi.any().required(),
-          token: Joi.any().optional()
+          q: Joi.any().required()
+        }
+      }
+    }
+  },
+  {
+    method: 'GET',
+    path: '/connect/profiles',
+    handler: Profile.get,
+    config: {
+      validate: {
+        query: {
+          id: Joi.string().required(),
+          network: Joi.string().required().valid(['twitter', 'facebook']),
+          token: Joi.string(),
         }
       }
     }

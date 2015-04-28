@@ -6,7 +6,8 @@ module.exports = function (Server) {
     password: 'cookie_encryption_password',
     clientId: Keys.facebook.key,
     clientSecret: Keys.facebook.secret,
-    isSecure: false
+    isSecure: false,
+    scope: ['public_profile', 'user_friends', 'email'],
   });
 
   Server.auth.strategy('twitter', 'bell', {

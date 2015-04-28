@@ -15,5 +15,10 @@ module.exports = {
   			resolve({});
   		});
   	}
+  },
+  Profile: {
+    get: function (Facebook, id) {
+      return Facebook.request({url: id});
+    }
   }
 }
