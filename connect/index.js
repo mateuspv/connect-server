@@ -8,6 +8,7 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
   var networksNames = Array.isArray(networksNames) ? networksNames : [networksNames];
   var it = callAll(networksNames, providers, api, Keys);
 
+  // remove it.
   return {
     Post: {
       all: it('Post', 'all'),
@@ -18,6 +19,9 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
     },
     User: {
       current: it('User', 'current')
+    },
+    Search: {
+      query: it('Search', 'query')
     }
   };
 };

@@ -11,5 +11,11 @@ module.exports = {
 		current: function(Twitter, options) {
 			return Twitter.request({url: 'account/verify_credentials'});
 		}
-	}
+	},
+	Search: {
+		query: function (Twitter, options) {
+			var query = {q: options};
+			return Twitter.request({url: 'search/tweets', options: query});
+		}
+  	}
 };

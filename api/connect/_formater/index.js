@@ -6,9 +6,7 @@
 
 var mock = require('./twitter-post-all.json');
 
-/**
- * map(fn (list))
- */
+
 function map(fn) {
   return function(list) {
     return list.map(fn);
@@ -52,3 +50,9 @@ Post.twitter = map(function(post) {
     user_likes: post.user_likes || false,
   }
 });
+
+var Search = exports.Search = {};
+
+Search.twitter = function (posts) {
+    return Post.twitter(posts['statuses']);
+}

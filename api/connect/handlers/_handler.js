@@ -13,7 +13,10 @@ module.exports = function (type, cb) {
           if (type === 'base') {
             return cb(beforeGetNetworks(keys), request, reply);
           }
-      });
+      })
+      .catch(function (err) {
+        cb({}, request, reply);
+      })
   }
 }
 
