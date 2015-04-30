@@ -65,6 +65,7 @@ Profile.facebook = function (profile) {
         id: profile.id,
         name: profile.name,
         user_image: 'http://graph.facebook.com/' + profile.id + '/picture',
+        link: 'http://facebook.com/' + profile.id,
         network: 'facebook'
     };
 };
@@ -72,6 +73,7 @@ Profile.facebook = function (profile) {
 Profile.twitter = function (profile) {  
     return {
         id: profile.id_str,
+        link: 'https://twitter.com/' + profile.screen_name,
         name: profile.name,
         user_image: profile.profile_image_url_https,
         description: profile.description,
