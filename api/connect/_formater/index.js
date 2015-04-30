@@ -60,10 +60,12 @@ Search.twitter = function (posts) {
 var Profile = exports.Profile = {};
 
 
-Profile.facebook = function (profile) {  
+Profile.facebook = function (profile) {
+    var hasCoverEmblemed = (profilex.cover || {}).source || '';
     return {
         id: profile.id,
         name: profile.name,
+        description: profile.description || '',
         user_image: 'http://graph.facebook.com/' + profile.id + '/picture',
         link: 'http://facebook.com/' + profile.id,
         network: 'facebook'
