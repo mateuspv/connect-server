@@ -6,7 +6,7 @@ exports.get = handler('base', function (provider, request, reply) {
 	var networkName = request.query.network;
 	
 	var Network = provider([networkName]);
-
+	console.log(id)
 	Network.Profile.get(id)
 		.then(function (profile) {
 			var user = profile[0];
@@ -15,6 +15,7 @@ exports.get = handler('base', function (provider, request, reply) {
 			reply({ profiles: res });
 		})
 		.catch(function (err) {
+			console.log(err)
 			reply({ err: err, profiles: []})
 		});
 });

@@ -61,13 +61,14 @@ var Profile = exports.Profile = {};
 
 
 Profile.facebook = function (profile) {
-    var hasCoverEmblemed = (profilex.cover || {}).source || '';
+    var hasCoverEmblemed = (profile.cover || {}).source || '';
     return {
         id: profile.id,
         name: profile.name,
         description: profile.description || '',
         user_image: 'http://graph.facebook.com/' + profile.id + '/picture',
         link: 'http://facebook.com/' + profile.id,
+        profile_banner_url: hasCoverEmblemed,
         network: 'facebook'
     };
 };
