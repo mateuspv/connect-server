@@ -21,7 +21,7 @@ Post.facebook = map(function(post) {
     user_image: 'http://graph.facebook.com/' + post.from.id + '/picture',
     network: 'facebook',
     video: post.source || '',
-    image: post.picture || '',
+    image: post.full_picture || post.picture || '',
     created_at: post.created_time,
     from: post.from.name || '',
     from_id: post.from.id || '',
