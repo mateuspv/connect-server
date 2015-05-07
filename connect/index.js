@@ -41,8 +41,8 @@ var methods = function (networks, keys, providers, apis, resource, method, opts)
 
 var callAll = function (networks, providers, apis, keys) {
   return function (resource, method) {
-      return function (args) {
-        var allCalls = methods(networks, keys, providers, apis, resource, method, args);
+      return function (opts) {
+        var allCalls = methods(networks, keys, providers, apis, resource, method, opts);
         return Promise.all(allCalls);
     };
   };

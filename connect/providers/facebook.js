@@ -30,7 +30,6 @@ Facebook.prototype.request = function (req) {
   var options = {'access_token': self._token};
   var fields = req.options || {};
   merge(options, fields);
-
   return new Promise(function(resolve, reject) {
     self._provider.api(url, method, options, function (res) {
       if (!res || res.error) {
