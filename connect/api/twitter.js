@@ -1,3 +1,5 @@
+var Promise = require('es6-promise').Promise;
+
 module.exports = {
 	Post: {
 		all: function (Twitter, options) {
@@ -20,7 +22,14 @@ module.exports = {
   	},
   	Profile: {
   		get: function (Twitter, id) {
-			return Twitter.request({url: 'users/show', options: {'user_id': id}});
+  			var Profile = Twitter.request({url: 'users/show', options: {'user_id': id}});
+  			var Posts =  Twitter.request({url: 'statuses/user_timeline', options: {'user_id': id}});
+  			return Promise.all([Profile, Posts])
+  				.then(function (data) {
+  					data[0].posts = {}
+  					data[0].posts.data = data[1];
+  					return data[0];
+  				})
   		}
   	}
 };

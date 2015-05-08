@@ -21,7 +21,6 @@ exports.get = handler('base', function (provider, request, reply) {
 		.then(function (perfil) {
 			var profile = perfil[0];
 			var posts = (profile.posts || {}).data || [];
-
 			var profileAfterFormated = pickFormater('Profile')(profile);
 
 			profileAfterFormated.posts = posts.map(takeId);
