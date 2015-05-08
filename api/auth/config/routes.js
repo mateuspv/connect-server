@@ -35,10 +35,5 @@ module.exports = [
     method: 'GET',
     path: '/auth/user',
     handler: Auth.user,
-  },
-  {
-    method: 'GET',
-    path: '/auth/check',
-    handler: Auth.check
   }
 ];

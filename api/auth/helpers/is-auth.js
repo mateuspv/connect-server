@@ -7,7 +7,7 @@ var statusify = function (status, field, cb) {
  * @param  {Status} status
  * @return {Boolean}
  */
-exports.twitter = function (status) {
+var twitter = function (status) {
   return statusify(status, 'twitter', function (status) {
     return status.token && status.secret ? true : false;
   });
@@ -18,8 +18,16 @@ exports.twitter = function (status) {
  * @param  {Status} status
  * @return {Boolean}
  */
-exports.facebook = function (status) {
+var facebook = function (status) {
   return statusify(status, 'facebook', function (status) {
     return status.token ? true : false;
   });
 };
+
+var isAuth = function (session) {
+	return facebook(session) && twitter(session);
+}
+
+isAuth.facebook = facebook;
+isAuth.twitter = twitter
+module.exports = isAuth;

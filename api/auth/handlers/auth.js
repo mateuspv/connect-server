@@ -4,22 +4,24 @@ var TokenBuilder = require('../../../helpers/token-builder');
 var SessionBase = require('../helpers/session');
 var isAuth = require('../helpers/is-auth');
 var Connect = require('../../../connect/index');
+var Boom = require('boom');
 
 exports.status = function (request, reply) {
-  var token = request.query.token;
+  request.session.get()
+    .then(function (session) {
+      if(!isAuth.facebook(session) || !isAuth.twitter(session)) {
+        return reply.view('auth/status', {auth: session, token: token }).code(401);
+      }
 
-  TokenBuilder.verify(token)
-    .then(replyStatus(reply, token))
-    .catch(replyStatus(reply, ''));
-};
-
-exports.check = function (request, reply) {
-  var token = request.query.token;
-  var tw = require('../../../connect/providers/twitter');
-  TokenBuilder.verify(token)
-    .then(function(session) {
-      var Twitter = new tw(session.twitter)
-      reply(Twitter.request({url: "/application/rate_limit_status"}))
+      var token = request.session.token;
+      var isUserAuth = isAuth(session);
+      var statusCode =  isUserAuth || Boom.unauthorized;
+      console.log(session)
+      reply.view('auth/status', {auth: session, token: token })
+        .code(statusCode);
+    })
+    .catch(function (err) {
+      reply(Boom.unauthorized);
     })
 };
 
@@ -42,20 +44,18 @@ exports.authentication = function (request, reply) {
 };
 
 exports.user = function (request, reply) {
-  var token = request.query.token;
-  TokenBuilder.verify(token)
+  request.session.get()
     .then(function(session) {
+      if(!isAuth.twitter(session)) {
+        reply().code(401);
+      }
       var Twitter = new Connect(['twitter'], session);
       Twitter.User.current()
         .then(function(user) {
           reply.view('auth/user', {user: user[0]})
         });
     })
-    .catch(function(err) {
-      reply({err: err});
-    });
 };
-
 
 var buildNetworkStatus = function (networkName, session) {
   var result = {};
@@ -92,8 +92,7 @@ var redirectIfNecessary = function(reply, credentials) {
 
 var replyStatus = function(reply, token) {
   return function (session) {
-    var isConnectAuth = (isAuth.facebook(session) && isAuth.twitter(session));
-    var statusCode = isConnectAuth || 401;
+    var statusCode = isAuth(session) || 401;
     reply.view('auth/status', {auth: session, token: token })
       .code(statusCode);
   };
