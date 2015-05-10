@@ -19,7 +19,7 @@ exports.get = ProxyRequest('base', function (provider, request, reply) {
 	var response = {};
 	
 	var getPostsFromProfile = compose(
-		curry(appyFormaterFor)(networkName, 'Posts'),
+		curry(applyFormaterFor)(networkName, 'Post'),
 		unzipPostsFromProfile,
 		unzipProfile
 	);
@@ -31,16 +31,16 @@ exports.get = ProxyRequest('base', function (provider, request, reply) {
 
 	Network.Profile.get(id)
 		.then(function (profile) {
-			response.profile = getProfile(profile);
+			response.profiles = [getProfile(profile)];
 			return profile;
 		})
 		.then(function (profile) {
 			response.posts = getPostsFromProfile(profile);
-			response.profile.posts = map(extractId, profile);
+			response.profiles.posts = map(extractId, profile);
 			reply(response);
 		})
 		.catch(function (err) {
-			reply({err: err})
+			reply({err: err, posts: [], profiles: []})
 		});
 });
 
@@ -53,14 +53,13 @@ var unzipProfile = function (profile) {
 };
 
 var unzipPostsFromProfile = function (profile) {
-	var posts = profile.posts || {};
-	return posts.data || [];
+	return (profile.posts || {}).data || [];
 };
 
 var extractId = function (element) {
 	return element.id;
 };
 
-var appyFormaterFor = function(networkName, type, data) {
-	return Formater.Post[networkName](posts);
+var applyFormaterFor = function(networkName, type, data) {
+	return Formater[type][networkName](data);
 };
