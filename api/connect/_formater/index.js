@@ -90,7 +90,7 @@ Profile.twitter = function (profile) {
         id: profile.id_str,
         link: 'https://twitter.com/' + profile.screen_name,
         name: profile.name,
-        user_image: profile.profile_image_url_https,
+        user_image: profile.profile_image_url_https + '/1500x500',
         description: profile.description,
         posts_total: profile.statuses_count,
         followers_count: profile.followers_count,
