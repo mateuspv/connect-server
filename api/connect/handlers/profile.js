@@ -1,42 +1,66 @@
-var handler = require('./_handler');
+var ProxyRequest = require('./_handler');
 var Formater = require('./../_formater/index');
-var Promise = require('es6-promise').Promise;
+var Helpers = require('./_helpers');
 
-exports.get = handler('base', function (provider, request, reply) {
+var R = require('ramda');
+var curry = R.curry;
+var map = R.map;
+var compose = R.compose;
+
+/**
+ * API 
+ */
+
+exports.get = ProxyRequest('base', function (provider, request, reply) {
 	var id = request.query.id;
 	var networkName = request.query.network;
-	var res = {};
+
+	var Network = provider([networkName]);	
+	var response = {};
 	
-	var Network = provider([networkName]);
+	var getPostsFromProfile = compose(
+		curry(appyFormaterFor)(networkName, 'Posts'),
+		unzipPostsFromProfile,
+		unzipProfile
+	);
 
-	function takeId(element) {
-		return element.id;
-	}
-
-	function pickFormater (type) {
-		return Formater[type][networkName];
-	}
+	var getProfile = compose(
+		curry(applyFormaterFor)(networkName, 'Profile'),
+		unzipProfile
+	);
 
 	Network.Profile.get(id)
-		.then(function (perfil) {
-			var profile = perfil[0];
-			var posts = (profile.posts || {}).data || [];
-			var profileAfterFormated = pickFormater('Profile')(profile);
-
-			profileAfterFormated.posts = posts.map(takeId);
-			res.profiles = [profileAfterFormated];
-
-			return posts;
+		.then(function (profile) {
+			response.profile = getProfile(profile);
+			return profile;
 		})
-		.then(function (posts) {
-			var postFormater = Formater.Post[networkName];
-			res.posts = postFormater(posts);
-		})
-		.then(function (profile, posts) {
-			return reply(res);
+		.then(function (profile) {
+			response.posts = getPostsFromProfile(profile);
+			response.profile.posts = map(extractId, profile);
+			reply(response);
 		})
 		.catch(function (err) {
-			console.log(err)
-			reply({ err: err, profiles: []})
+			reply({err: err})
 		});
 });
+
+/**
+ * Private 
+ */
+
+var unzipProfile = function (profile) {
+	return profile[0];
+};
+
+var unzipPostsFromProfile = function (profile) {
+	var posts = profile.posts || {};
+	return posts.data || [];
+};
+
+var extractId = function (element) {
+	return element.id;
+};
+
+var appyFormaterFor = function(networkName, type, data) {
+	return Formater.Post[networkName](posts);
+};
