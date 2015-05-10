@@ -36,7 +36,7 @@ exports.get = ProxyRequest('base', function (provider, request, reply) {
 		})
 		.then(function (profile) {
 			response.posts = getPostsFromProfile(profile);
-			response.profiles.posts = map(extractId, profile);
+			response.profiles[0].posts = map(extractId, profile);
 			reply(response);
 		})
 		.catch(function (err) {
