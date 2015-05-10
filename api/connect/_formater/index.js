@@ -4,9 +4,6 @@
  * @return {Object} correct object
  */
 
-var mock = require('./twitter-post-all.json');
-
-
 var map = function (fn) {
   return function(list) {
     return list.map(fn);
