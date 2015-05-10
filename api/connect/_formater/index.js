@@ -68,6 +68,10 @@ Search.twitter = function (posts) {
     return Post.twitter(posts['statuses']);
 }
 
+Search.facebook = function (post) {
+    return []
+}
+
 var Profile = exports.Profile = {};
 
 

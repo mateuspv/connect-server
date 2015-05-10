@@ -23,7 +23,7 @@ module.exports = [
     config: {
       validate: {
         query: {
-          q: Joi.any().required()
+          q: Joi.any().required(),
         }
       }
     }
