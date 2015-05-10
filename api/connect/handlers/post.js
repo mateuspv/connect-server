@@ -1,24 +1,33 @@
 var handler = require('./_handler');
 var Formater = require('./../_formater/index').Post;
+var Helpers = require('./_helpers');
+var R = require('ramda');
+var curry = R.curry;
+var curryN = R.curryN;
+
+/**
+ * API 
+ */
 
 exports.all = handler(function (connect, request, reply) {
   var Posts = connect.Post.all();
 
-  Posts.then(function(allPosts) {
-    var facebook = Formater.facebook(allPosts[0].data);
-    var twitter = Formater.twitter(allPosts[1]);
-    var all = [].concat(facebook, twitter);
-
-    reply({posts: all });
-  });
+  Posts
+    .then(Helpers.extract)
+    .then(applyFormater)
+    .then(Helpers.concat)
+    .then(responseWithPosts)
+    .then(curryN(1, reply));
 });
 
-exports.create = handler('base', function (provider, request, reply) {
-  var Facebook = provider(['facebook', 'twitter']);
 
-  Facebook.Post.create({
-    message: 'test'
-  });
+exports.create = function (request, reply) {
+}
 
-  reply(Facebook);
-});
+/**
+ * Private 
+ */
+
+var responseWithPosts = curryN(1, Helpers.responseWith)('posts');
+
+var applyFormater = curry(Helpers.format)(Formater);
