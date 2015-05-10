@@ -24,5 +24,11 @@ module.exports = {
       var User = Facebook.request({url: id, options: options});
       return User;
     }
+  },
+  Friends: {
+    all: function (Facebook) {
+      var options = {limit: 100};
+      return Facebook.request({url: 'me/friends', options: options});
+    }
   }
 }

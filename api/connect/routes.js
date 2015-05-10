@@ -3,6 +3,7 @@ var Joi = require('joi');
 var Post = require('./handlers/post');
 var Search = require('./handlers/search');
 var Profile = require('./handlers/profile');
+var Friends = require('./handlers/friends');
 
 module.exports = [
   {
@@ -40,5 +41,10 @@ module.exports = [
         }
       }
     }
+  },
+  {
+    method: 'GET',
+    path: '/connect/friends',
+    handler: Friends.all,
   }
 ]

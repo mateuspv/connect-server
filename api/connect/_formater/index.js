@@ -7,10 +7,21 @@
 var mock = require('./twitter-post-all.json');
 
 
-function map(fn) {
+var map = function (fn) {
   return function(list) {
     return list.map(fn);
   }
+};
+
+var helpers = {};
+helpers.facebook = {};
+
+helpers.facebook.profileImage = function (id) {
+    return 'http://graph.facebook.com/' + id + '/picture';
+}
+
+helpers.facebook.profileLink = function (id) {
+    return 'http://facebook.com/' + id;
 }
 
 var Post = exports.Post = {};
@@ -88,3 +99,25 @@ Profile.twitter = function (profile) {
         network: 'twitter'
     };
 };
+
+var Friends = exports.Friends = {};
+
+Friends.twitter = map(function (friend) {
+    return {
+        id: friend.id_str,
+        name: friend.name,
+        user_image: 'https://twitter.com/' + friend.screen_name + '/profile_image',
+        link: 'https://twitter.com/' + friend.screen_name,
+        network: 'twitter'
+    }
+});
+
+Friends.facebook = map(function (friend) {
+    return {
+        id: friend.id,
+        name: friend.name,
+        user_image: helpers.facebook.profileImage(friend.id),
+        link: helpers.facebook.profileLink(friend.id),
+        network: 'facebook'
+    }
+});

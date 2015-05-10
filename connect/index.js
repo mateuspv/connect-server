@@ -25,6 +25,9 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
     },
     Profile: {
       get: it('Profile', 'get')
+    },
+    Friends: {
+      all: it('Friends', 'all')
     }
   };
 };

@@ -31,5 +31,21 @@ module.exports = {
   					return data[0];
   				})
   		}
+  	},
+  	Friends: {
+  		all: function (Twitter) {
+  			var limitFriendsQuery = function (ids) {
+				return ids.slice(0, 100);
+			}
+
+  			return Twitter.request({url: 'friends/ids'})
+	  			.then(function (friends) {
+					return limitFriendsQuery(friends.ids);
+				})
+				.then(function (ids) {
+					var options = {user_id: ids};
+					return Twitter.request({url: 'friendships/lookup', options: options});
+				});
+  		}
   	}
 };
