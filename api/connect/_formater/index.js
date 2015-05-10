@@ -24,11 +24,12 @@ helpers.facebook.profileLink = function (id) {
 var Post = exports.Post = {};
 
 Post.facebook = map(function(post) {
-  var trySeparateIdFromUser = post.id.split('_')[1];
-  var id = trySeparateIdFromUser ? trySeparateIdFromUser : post.id;
-  
+  var trySeparateIdFromResource = post.id.split('_');
+  var resourceId = trySeparateIdFromResource[1] ? trySeparateIdFromResource[1] : post.id;
+  var linkId = trySeparateIdFromResource[0];
+
   return {
-    id: id,
+    id: post.id,
     user_image: 'http://graph.facebook.com/' + post.from.id + '/picture',
     network: 'facebook',
     video: post.source || '',
@@ -41,6 +42,7 @@ Post.facebook = map(function(post) {
     user_shares: post.user_shares || false,
     likes_count: post.likes_count || '',
     user_likes: post.user_likes || false,
+    link: 'https://www.facebook.com/' + linkId,
   }
 });
 
@@ -59,6 +61,7 @@ Post.twitter = map(function(post) {
     user_shares: post.user_shares || false,
     likes_count: post.favorite_count || '',
     user_likes: post.user_likes || false,
+    link: 'https://twitter.com/' post.user.id_str + '/' + post.id,
   }
 });
 
