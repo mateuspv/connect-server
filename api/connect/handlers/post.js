@@ -1,6 +1,7 @@
 var handler = require('./_handler');
 var Formater = require('./../_formater/index').Post;
 var Helpers = require('./_helpers');
+
 var R = require('ramda');
 var curry = R.curry;
 var curryN = R.curryN;
@@ -28,6 +29,6 @@ exports.create = function (request, reply) {
  * Private 
  */
 
-var responseWithPosts = curryN(1, Helpers.responseWith)('posts');
+var responseWithPosts = curry(Helpers.responseWith)('posts');
 
 var applyFormater = curry(Helpers.format)(Formater);
