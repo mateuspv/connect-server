@@ -1,3 +1,9 @@
+
+/**
+ * REFATORAR
+ */
+
+
 var Promise = require('es6-promise').Promise;
 var Networks = require('./providers/index');
 var API = require('./api/index');

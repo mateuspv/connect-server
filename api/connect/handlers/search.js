@@ -21,7 +21,7 @@ exports.query = handler(function (connect, request, reply) {
 		.then(function (result) {
 			return {search: result.twitter};
 		})
-		.then(curryN(1, reply));
+		.then(curry(1, reply));
 });
 
 
