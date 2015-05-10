@@ -24,8 +24,11 @@ helpers.facebook.profileLink = function (id) {
 var Post = exports.Post = {};
 
 Post.facebook = map(function(post) {
+  var trySeparateIdFromUser = post.id.split('_')[1];
+  var id = trySeparateIdFromUser ? trySeparateIdFromUser : post.id;
+  
   return {
-    id: post.id,
+    id: id,
     user_image: 'http://graph.facebook.com/' + post.from.id + '/picture',
     network: 'facebook',
     video: post.source || '',
