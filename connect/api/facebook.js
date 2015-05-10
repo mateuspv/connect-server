@@ -19,7 +19,7 @@ module.exports = {
   },
   Profile: {
     get: function (Facebook, id) {
-      var fields = ['id', 'name', 'about', 'bio', 'posts', 'cover', 'full_picture'];
+      var fields = ['id', 'name', 'about', 'bio', 'cover', 'posts{full_picture}'];
       var options = { fields: fields };
       var User = Facebook.request({url: id, options: options});
       return User;
