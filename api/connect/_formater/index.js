@@ -26,7 +26,6 @@ var Post = exports.Post = {};
 Post.facebook = map(function(post) {
   var trySeparateIdFromResource = post.id.split('_');
   var resourceId = trySeparateIdFromResource[1] ? trySeparateIdFromResource[1] : post.id;
-  var linkId = trySeparateIdFromResource[0];
 
   return {
     id: post.id,
@@ -42,7 +41,7 @@ Post.facebook = map(function(post) {
     user_shares: post.user_shares || false,
     likes_count: post.likes_count || '',
     user_likes: post.user_likes || false,
-    link: 'https://www.facebook.com/' + linkId,
+    link: 'https://www.facebook.com/' + resourceId,
   }
 });
 
@@ -61,7 +60,7 @@ Post.twitter = map(function(post) {
     user_shares: post.user_shares || false,
     likes_count: post.favorite_count || '',
     user_likes: post.user_likes || false,
-    link: 'https://twitter.com/' + post.user.id_str + '/' + post.id,
+    link: 'https://twitter.com/' + post.user.screen_name + '/status/' + post.id_str,
   }
 });
 
