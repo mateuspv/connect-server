@@ -61,7 +61,7 @@ Post.twitter = map(function(post) {
     user_shares: post.user_shares || false,
     likes_count: post.favorite_count || '',
     user_likes: post.user_likes || false,
-    link: 'https://twitter.com/' post.user.id_str + '/' + post.id,
+    link: 'https://twitter.com/' + post.user.id_str + '/' + post.id,
   }
 });
 
