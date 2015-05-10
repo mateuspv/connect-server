@@ -1,14 +1,32 @@
 var handler = require('./_handler');
 var Formater = require('./../_formater/index').Search;
+var Helpers = require('./_helpers');
+
+var R = require('ramda');
+var curry = R.curry;
+var curryN = R.curryN;
+
+
+/**
+ * API 
+ */
 
 exports.query = handler(function (connect, request, reply) {
 	var q = request.query.q;
-	var search = connect.Search.query(q);
+	var Search = connect.Search.query(q);
 	
-	search
+	Search
+	    .then(Helpers.extract)
+    	.then(applyFormater)
 		.then(function (result) {
-			var facebook = result[0];
-			var twitter = Formater.twitter(result[1]);
-			reply({search: twitter});
-		});
+			return {search: result.twitter};
+		})
+		.then(curryN(1, reply));
 });
+
+
+/**
+ * Private 
+ */
+
+var applyFormater = curry(Helpers.format)(Formater);
