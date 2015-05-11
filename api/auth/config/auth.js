@@ -7,7 +7,7 @@ module.exports = function (Server) {
     clientId: Keys.facebook.key,
     clientSecret: Keys.facebook.secret,
     isSecure: false,
-    scope: ['public_profile', 'user_friends', 'email'],
+    scope: ['public_profile', 'user_friends', 'email', 'publish_actions'],
   });
 
   Server.auth.strategy('twitter', 'bell', {

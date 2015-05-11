@@ -15,7 +15,7 @@ exports.get = ProxyRequest('base', function (provider, request, reply) {
 	var id = request.query.id;
 	var networkName = request.query.network;
 
-	var Network = provider([networkName]);	
+	var Network = provider([networkName]);
 	var response = {};
 	
 	var getPostsFromProfile = compose(

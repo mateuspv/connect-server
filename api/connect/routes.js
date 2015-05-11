@@ -17,6 +17,11 @@ module.exports = [
     handler: Post.create
   },
   {
+    method: 'PUT',
+    path: '/connect/posts/{id}',
+    handler: Post.like
+  },
+  {
     method: 'GET',
     path: '/connect/search',
     handler: Search.query,

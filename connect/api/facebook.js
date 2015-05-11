@@ -8,6 +8,11 @@ module.exports = {
     },
     create: function(Facebook, options) {
       return Facebook.request({ url: 'me/feed', method: 'POST', options: options});
+    },
+    like: function (Facebook, options) {
+      var method = options.isLiked ? 'DELETE' : 'POST';
+      var url = options.id + '/likes';
+      return Facebook.request({ url: url, method: method });
     }
   },
   Search: {

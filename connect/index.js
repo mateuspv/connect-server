@@ -18,7 +18,8 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
   return {
     Post: {
       all: it('Post', 'all'),
-      create: it('Post', 'create')
+      like: it('Post', 'like'),
+      create: it('Post', 'create'),
     },
     Like: {
       create: it('Like', 'create')
