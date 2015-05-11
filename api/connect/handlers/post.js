@@ -25,7 +25,7 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 	var post = request.payload.post;
 	var networkName = post.network;
 	var postId = request.params.id;
-	var isLiked = post.user_likes || false;
+	var isLiked = !post.user_likes;
 	var Network = provider([networkName]);
 
 	Network.Post.like({id: postId, isLiked: isLiked})
@@ -33,7 +33,6 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 			if(isSuccessLikeAction(result)) {
 				reply.statusCode = 200;
 				post.id = postId;
-				post.user_likes = !isLiked;
 				return post;
 			}
 			return reply({});
