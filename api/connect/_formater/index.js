@@ -95,12 +95,12 @@ Profile.twitter = function (profile) {
         id: profile.id_str,
         link: 'https://twitter.com/' + profile.screen_name,
         name: profile.name,
-        user_image: profile.profile_image_url_https + '/1500x500',
+        user_image: profile.profile_image_url_https,
         description: profile.description,
         posts_total: profile.statuses_count,
         followers_count: profile.followers_count,
         friends_count: profile.friends_count,
-        profile_banner_url: profile.profile_banner_url,
+        profile_banner_url: profile.profile_banner_url  + '/1500x500',
         profile_color: profile.profile_background_color,
         network: 'twitter'
     };
