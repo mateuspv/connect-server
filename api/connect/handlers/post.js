@@ -30,7 +30,7 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 
 	Network.Post.like({id: postId, isLiked: isLiked})
 		.then(function (result) {
-			if(isSuccessLikeAction(result)) {
+			if(isSuccessLikeAction(result, networkName)) {
 				reply.statusCode = 200;
 				post.id = postId;
 				return post;
@@ -60,7 +60,14 @@ var responseWithPost = function (post) {
 	return {posts: post};
 };
 
-var isSuccessLikeAction = function (data) {
-	var success = data[0].success
-	return (success && success === true) || false;
+var isSuccessLikeAction = function (data, networkName) {
+	var success = false;
+	if(networkName === 'facebook') {
+		var isSuccess = data[0].success;
+		return (isSuccess && isSuccess === true) || false;
+	}
+	if(networkName === 'twitter') {
+		return data.errors || true;
+	}
+	return success;
 }

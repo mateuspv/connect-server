@@ -33,11 +33,9 @@ Twitter.prototype.request = function (req) {
   var url = req.url;
   var method = (req.method || 'GET').toLowerCase();
   var options = req.options || {};
-
   return new Promise(function(resolve, reject) {
     self._provider[method](url, options, function(err, data, response) {
       if (err) {
-        console.log('twitter', err);
         reject(err);
       }
       resolve(data);

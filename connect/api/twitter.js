@@ -7,6 +7,12 @@ module.exports = {
 		},
 		create: function (Twitter, options) {
 			return Twitter.request({url: 'statuses/update', method: 'POST', options: {status: options.message}})
+		},
+		like: function (Twitter, options) {
+			var urlPartial = !options.isLiked ? 'create' : 'destroy';
+			var url = '/favorites/' + urlPartial;
+			var options = {id: options.id};
+			return Twitter.request({url: url, method: 'POST', options: options});
 		}
 	},
 	User: {
@@ -22,8 +28,9 @@ module.exports = {
   	},
   	Profile: {
   		get: function (Twitter, id) {
-  			var Profile = Twitter.request({url: 'users/show', options: {'user_id': id}});
-  			var Posts =  Twitter.request({url: 'statuses/user_timeline', options: {'user_id': id}});
+  			var options = {'user_id': id};
+  			var Profile = Twitter.request({url: 'users/show', options: options});
+  			var Posts =  Twitter.request({url: 'statuses/user_timeline', options: options});
   			return Promise.all([Profile, Posts])
   				.then(function (data) {
   					data[0].posts = {}
