@@ -47,7 +47,7 @@ Post.facebook = map(function(post) {
 
 Post.twitter = map(function(post) {
   return {
-    id: post.id,
+    id: post.id_str,
     user_image: post.user.profile_image_url,
     network: 'twitter',
     video: post.source || '',
