@@ -36,6 +36,14 @@ exports.responseWith = function (fieldName, data) {
 	return resp;
 };
 
+exports.responseWithError = function (err) {
+	return {err: err};
+}
+
+exports.fromField = function (fieldName, data) {
+	return data[fieldName];
+};
+
 /**
  * Applies a formater to each network
  * @param  {Object} Formater

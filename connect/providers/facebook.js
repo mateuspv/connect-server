@@ -33,7 +33,7 @@ Facebook.prototype.request = function (req) {
   return new Promise(function(resolve, reject) {
     self._provider.api(url, method, options, function (res) {
       if (!res || res.error) {
-        console.log('facebook', res.error);
+        console.log('facebook error', res.error);
         return reject(res);
       }
 

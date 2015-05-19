@@ -4,7 +4,7 @@ module.exports = {
   Post: {
     all: function (Facebook, fields) {
       var options = {fields: ['id', 'full_picture', 'from', 'message', 'link', 'picture', 'description', 'created_time']};
-      return Facebook.request({ url: 'me/home', options: options});
+      return Facebook.request({ url: 'me/feed', options: options});
     },
     create: function(Facebook, options) {
       return Facebook.request({ url: 'me/feed', method: 'POST', options: options});
