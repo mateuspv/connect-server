@@ -18,16 +18,19 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 	var networks = qs.network;
 
 	var Connect = provider(networks);
-	
+
 	Connect.Search.query({q:q, options: options})
-		//compose(responseWithSearch, applyFormater, Helpers.extract
 		.then(function (data) {
-			return reply({data:data});
+			var result = [];
+			if(searchIncludesNetwork(networks, 'twitter')) {
+				result = result.concat(handleTwitter(data[0]));
+			}
+			reply({search: result});
 		})
 		.catch(function (err) {
 			console.log(err)
+			reply({err: err, search: []});
 		});
-		//compose(response, Helpers.responseWithError)
 });
 
 
@@ -35,6 +38,41 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
  * Private 
  */
 
-var applyFormater = curry(Helpers.format)(Formater);
+//var applyFormater = curry(Helpers.format)(Formater);
 
 var responseWithSearch = compose(curry(Helpers.responseWith)('search'), curry(Helpers.fromField)('twitter'));
+
+var formateResource = function (resource, network, data) {
+	return Formater[network][resource](data);
+};
+
+var formatSearchPost = curry(formateResource)('post');
+var formatSearchProfile = curry(formateResource)('profile');
+
+var searchIncludesNetwork = function (networks, networkName) {
+	return networks.indexOf(networkName) > -1;
+};
+
+var handleTwitter = function (twitter) {
+	var twitterR1 = twitter[0];
+	var twitterR2 = twitter[1];
+	var twitterUser = twitter[2];
+
+	var R1 = [];
+	var R2 = [];
+	var R3 = [];
+
+	if(twitterR1) {
+		R1 = formatSearchPost('twitter', twitterR1['statuses']);
+	}
+
+	if(twitterR2) {
+		R2 = Array.isArray(twitterR2) ? formatSearchProfile('twitter', twitterR2) : formatSearchPost('twitter', twitterR2['statuses']);
+	}
+
+	if(twitterUser) {
+		R3 = Formater.twitter.profile(twitterUser);
+	}
+
+	return [].concat(R1, R2, R3);
+}

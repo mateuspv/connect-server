@@ -43,7 +43,7 @@ module.exports = {
 				response = response.concat(tweets);
 			}
 
-			if(type.indexOf('user') > -1) {
+			if(type.indexOf('twitterUsers') > -1) {
 				var user = Twitter.request({url: 'users/search', options: {q: q}});
 				response = response.concat(user);
 			}

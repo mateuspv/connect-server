@@ -73,11 +73,29 @@ Post.create.twitter = function (post) {
     return {id: post[0].id_str};
 }
 
-var Search = exports.Search = {};
+var Search = exports.Search = { twitter: {}, facebook: {} };
 
-Search.twitter = function (posts) {
-    return Post.twitter(posts['statuses']);
-}
+Search.twitter.post = Post.twitter;
+
+Search.twitter.profile = map(function (user) {
+    return {
+        id: user.id_str,
+        user_image: user.profile_image_url,
+        network: 'twitter',
+        video: user.source || '',
+        image: user.image || '',
+        created_at: user.created_at,
+        from: user.name || '',
+        from_id: user.id_str || '',
+        message: user.description || '',
+        shares_count: '',
+        user_shares: false,
+        likes_count: '',
+        user_likes: false,
+        link: 'https://twitter.com/' + user.screen_name,
+    }
+});
+
 
 Search.facebook = function (post) {
     return []
