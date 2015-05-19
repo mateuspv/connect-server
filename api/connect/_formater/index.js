@@ -64,6 +64,15 @@ Post.twitter = map(function(post) {
   }
 });
 
+Post.create = {};
+Post.create.facebook = function(post) {
+    return {id: post[0].id};
+};
+
+Post.create.twitter = function (post) {
+    return {id: post[0].id_str};
+}
+
 var Search = exports.Search = {};
 
 Search.twitter = function (posts) {

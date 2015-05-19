@@ -45,8 +45,27 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 		})
 });
 
-exports.create = function (request, reply) {
-}
+exports.create = ProxyRequest('base', function (provider, request, reply) {
+	var post = request.payload.post;
+	var networkName = post.network;
+	var Network = new provider([networkName]);
+	var message = post.message;
+
+	Network.Post.create({message: message})
+		.then(Formater.create[networkName])
+		.then(function (response) {
+			post.id = response.id;
+			post.created_at = Date.now();
+
+			reply({
+				post: post,
+			})
+		})
+		.catch(function (err) {
+			console.log(err);
+			reply({err: err})
+		})
+});
 
 /**
  * Private 
