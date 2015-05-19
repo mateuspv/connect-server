@@ -26,8 +26,29 @@ module.exports = {
 	},
 	Search: {
 		query: function (Twitter, options) {
-			var query = {q: options};
-			return Twitter.request({url: 'search/tweets', options: query});
+			var response = [];
+			var type = options.options;
+			var q = options.q;
+
+			var tweetsOptions = type.filter(function (type) {
+				return type === 'recent' || type === 'popular' || type === 'mixed';
+			});
+
+			var tweets = tweetsOptions.map(function (type) {
+				var query = {q: q, 'result_type': type};
+				return Twitter.request({url: 'search/tweets', options: query});
+			});
+
+			if(tweets.length > 0) {
+				response = response.concat(tweets);
+			}
+
+			if(type.indexOf('user') > -1) {
+				var user = Twitter.request({url: 'users/search', options: {q: q}});
+				response = response.concat(user);
+			}
+
+			return Promise.all(response);
 		}
   	},
   	Profile: {

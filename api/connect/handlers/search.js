@@ -1,4 +1,4 @@
-var handler = require('./_handler');
+var ProxyRequest = require('./_handler');
 var Formater = require('./../_formater/index').Search;
 var Helpers = require('./_helpers');
 
@@ -11,15 +11,23 @@ var compose = R.compose;
  * API 
  */
 
-exports.query = handler(function (connect, request, reply) {
-	var q = request.query.q;
-	var Search = connect.Search;
-	var response = curry(1, reply);
+exports.query = ProxyRequest('base', function (provider, request, reply) {
+	var qs = request.query;
+	var q = qs.q;
+	var options = qs.type;
+	var networks = qs.network;
+
+	var Connect = provider(networks);
 	
-	Search.query(q)
-		.then(compose(responseWithSearch, applyFormater, Helpers.extract))
-		.then(response)
-		.catch(compose(response, Helpers.responseWithError));
+	Connect.Search.query({q:q, options: options})
+		//compose(responseWithSearch, applyFormater, Helpers.extract
+		.then(function (data) {
+			return reply({data:data});
+		})
+		.catch(function (err) {
+			console.log(err)
+		});
+		//compose(response, Helpers.responseWithError)
 });
 
 

@@ -29,6 +29,8 @@ module.exports = [
       validate: {
         query: {
           q: Joi.any().required(),
+          type: Joi.any().required(),
+          network: Joi.any().required(),
           token: Joi.string()
         }
       }
