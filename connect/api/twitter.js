@@ -54,7 +54,7 @@ module.exports = {
 			return Promise.all(all)
 				.then(function (response) {
 					return {
-						profiles: (response[0] ? response[0][0] : []) || [],
+						profiles: (response[0] ? response[0] : []) || [],
 						tweets: (response[1] ? response[1].statuses : []) || [],
 	          		}
 	        	});

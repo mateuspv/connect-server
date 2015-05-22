@@ -40,7 +40,6 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 				var userTwitter = Formater.twitter.profile(twitter.profiles);
 				result.search.user_twitter = userTwitter.map(mapId);
 				result.user_twitter = userTwitter;
-				
 				// all posts
 				var allUsersFromPosts = allUsersFromTweets(twitter.tweets);
 				var allUserPosts = Formater.twitter.post(twitter.tweets);
