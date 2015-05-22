@@ -37,15 +37,14 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 			}
 
 			if(searchIncludesNetwork(networks, 'twitter')) {
-				console.log(data, twitter)
 				var userTwitter = Formater.twitter.profile(twitter.profiles);
-				result.search.user_twitter = userTwitter.map(curry(mapField)('id_str'));
+				result.search.user_twitter = userTwitter.map(mapId);
 				result.user_twitter = userTwitter;
 			}
 
 			if(searchIncludesNetwork(networks, 'facebook')) {
 				var userFacebook = Formater.facebook.profile(facebook.profiles);
-				result.search.user_facebook = userFacebook.map(curry(mapField)('id'));
+				result.search.user_facebook = userFacebook.map(mapId);
 				result.user_facebook = userFacebook;
 			}
 			reply(result);
@@ -65,8 +64,8 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 
 var responseWithSearch = compose(curry(Helpers.responseWith)('search'), curry(Helpers.fromField)('twitter'));
 
-var mapField = function (field, data) {
-	return data[field];
+var mapId = function (user) {
+	return user.id;
 };
 
 var formateResource = function (resource, network, data) {
