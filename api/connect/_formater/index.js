@@ -102,6 +102,7 @@ Search.facebook.profile = map(function (user) {
 Search.facebook.page = map(function (page) {
    return {
     id: page.id,
+    description: page.description || '',
     name: page.name || '',
     image: 'http://graph.facebook.com/' + page.id + '/picture',
     cover: page.cover ? page.cover.source : '',
