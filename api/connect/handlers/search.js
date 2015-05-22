@@ -26,14 +26,14 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 			var twitter = '';
 
 			if(searchIncludesNetwork(networks, 'twitter') && searchIncludesNetwork(networks, 'facebook')) {
-				facebook = data[1];
-				twitter = data[0];
+				facebook = data[0];
+				twitter = data[1];
 			}
 			else if(searchIncludesNetwork(networks, 'twitter')) {
 				twitter = data[0];
 			}
 			else {
-				facebook = data[0]
+				facebook = data[0];
 			}
 
 			if(searchIncludesNetwork(networks, 'twitter')) {
