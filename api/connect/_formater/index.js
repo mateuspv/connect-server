@@ -80,26 +80,24 @@ Search.twitter.post = Post.twitter;
 Search.twitter.profile = map(function (user) {
     return {
         id: user.id_str,
-        user_image: user.profile_image_url,
-        network: 'twitter',
-        video: user.source || '',
-        image: user.image || '',
-        created_at: user.created_at,
-        from: user.name || '',
-        from_id: user.id_str || '',
-        message: user.description || '',
-        shares_count: '',
-        user_shares: false,
-        likes_count: '',
-        user_likes: false,
+        name: user.name,
+        screenname: user.screen_name,
+        image: user.profile_image_url,
+        bio: user.description || '',
         link: 'https://twitter.com/' + user.screen_name,
     }
 });
 
 
-Search.facebook = function (post) {
-    return []
-}
+Search.facebook.profile = map(function (user) {
+   return {
+    id: user.id,
+    name: user.name || '',
+    image: 'http://graph.facebook.com/' + user.id + '/picture',
+    cover: user.cover ? user.cover.source : '',
+    link: user.link,
+  }
+})
 
 var Profile = exports.Profile = {};
 

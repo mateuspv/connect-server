@@ -21,11 +21,34 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 
 	Connect.Search.query({q:q, options: options})
 		.then(function (data) {
-			var result = [];
-			if(searchIncludesNetwork(networks, 'twitter')) {
-				result = result.concat(handleTwitter(data[0]));
+			var result = { search: {id: 1} };
+			var facebook = '';
+			var twitter = '';
+
+			if(searchIncludesNetwork(networks, 'twitter') && searchIncludesNetwork(networks, 'facebook')) {
+				facebook = data[1];
+				twitter = data[0];
 			}
-			reply({search: result});
+			else if(searchIncludesNetwork(networks, 'twitter')) {
+				twitter = data[0];
+			}
+			else {
+				facebook = data[0]
+			}
+
+			if(searchIncludesNetwork(networks, 'twitter')) {
+				console.log(data, twitter)
+				var userTwitter = Formater.twitter.profile(twitter.profiles);
+				result.search.user_twitter = userTwitter.map(userId);
+				result.user_twitter = userTwitter;
+			}
+
+			if(searchIncludesNetwork(networks, 'facebook')) {
+				var userFacebook = Formater.facebook.profile(facebook.profiles);
+				result.search.user_facebook = userFacebook.map(userId);
+				result.user_facebook = userFacebook;
+			}
+			reply(result);
 		})
 		.catch(function (err) {
 			console.log(err)
@@ -41,6 +64,10 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 //var applyFormater = curry(Helpers.format)(Formater);
 
 var responseWithSearch = compose(curry(Helpers.responseWith)('search'), curry(Helpers.fromField)('twitter'));
+
+var userId = function (user) {
+	return user.id;
+};
 
 var formateResource = function (resource, network, data) {
 	return Formater[network][resource](data);

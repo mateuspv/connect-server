@@ -18,9 +18,20 @@ module.exports = {
   },
   Search: {
   	query: function (Facebook, options) {
-  		return new Promise(function(resolve) {
-  			resolve({});
-  		});
+      var result = [];
+      var type = options.options;
+      var q = options.q;
+
+      if(type.indexOf('facebookUser') > -1) {
+        result.push(Facebook.request({url: '/search', options: {q: q, type:'user', limit: 100, fields: ['cover','name','link','gender']}}));
+      }
+
+  		return Promise.all(result)
+        .then(function (response) {
+          return {
+            profiles: response[0].data || [],
+          }
+        })
   	}
   },
   Profile: {
