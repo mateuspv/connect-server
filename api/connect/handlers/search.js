@@ -50,6 +50,11 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 				var pagesFacebook = Formater.facebook.page(facebook.page || []);
 				result.search.page_facebook = pagesFacebook.map(mapId);
 				result.page_facebook = pagesFacebook;
+
+				var groupsFacebook = Formater.facebook.group(facebook.group || []);
+				result.search.group_facebook = groupsFacebook.map(mapId);
+				result.group_facebook = groupsFacebook;
+				
 			}
 			reply(result);
 		})

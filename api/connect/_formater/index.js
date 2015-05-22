@@ -110,6 +110,18 @@ Search.facebook.page = map(function (page) {
   }
 });
 
+Search.facebook.group = map(function (group) {
+   return {
+    id: group.id,
+    description: group.description || '',
+    name: group.name || '',
+    icon: group.icon,
+    cover: group.cover ? group.cover.source : '',
+    link: 'https://www.facebook.com' + group.id,
+  }
+});
+
+
 var Profile = exports.Profile = {};
 
 

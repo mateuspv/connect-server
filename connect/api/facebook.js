@@ -18,7 +18,7 @@ module.exports = {
   },
   Search: {
   	query: function (Facebook, options) {
-      var result = [[], []];
+      var result = [[], [], []];
       var type = options.options;
       var q = options.q;
 
@@ -30,11 +30,16 @@ module.exports = {
         result[1] = Facebook.request({url: '/search', options: {q: q, type:'page', limit: 100, fields: ['cover','name','about','id','link']}});
       }
 
+      if(type.indexOf('group') > -1) {
+        result[2] = Facebook.request({url: '/search', options: {q: q, type:'group', limit: 100, fields: ['cover','name', 'id','icon', 'description']}});
+      }
+
       return Promise.all(result)
         .then(function (response) {
           return {
             profiles: response[0] ? response[0].data : [],
-            page: response[1] ? (response[1].data || []) : []
+            page: response[1] ? (response[1].data || []) : [],
+            group: response[2] ? (response[2].data || []) : []
           }
         })
   	}
