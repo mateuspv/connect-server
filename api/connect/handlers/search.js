@@ -43,9 +43,13 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 			}
 
 			if(searchIncludesNetwork(networks, 'facebook')) {
-				var userFacebook = Formater.facebook.profile(facebook.profiles);
+				var userFacebook = Formater.facebook.profile(facebook.profiles || []);
 				result.search.user_facebook = userFacebook.map(mapId);
 				result.user_facebook = userFacebook;
+
+				var pagesFacebook = Formater.facebook.page(facebook.page || []);
+				result.search.page_facebook = pagesFacebook.map(mapId);
+				result.page_facebook = pagesFacebook;
 			}
 			reply(result);
 		})

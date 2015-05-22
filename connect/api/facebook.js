@@ -18,18 +18,23 @@ module.exports = {
   },
   Search: {
   	query: function (Facebook, options) {
-      var result = [];
+      var result = [[], []];
       var type = options.options;
       var q = options.q;
 
       if(type.indexOf('facebookUser') > -1) {
-        result.push(Facebook.request({url: '/search', options: {q: q, type:'user', limit: 100, fields: ['cover','name','link','gender']}}));
+        result[0] = Facebook.request({url: '/search', options: {q: q, type:'user', limit: 100, fields: ['cover','name','link','gender']}});
       }
 
-  		return Promise.all(result)
+      if(type.indexOf('page') > -1) {
+        result[1] = Facebook.request({url: '/search', options: {q: q, type:'page', limit: 100, fields: ['cover','name','about','id','link']}});
+      }
+
+      return Promise.all(result)
         .then(function (response) {
           return {
-            profiles: response[0].data || [],
+            profiles: response[0] ? response[0].data : [],
+            page: response[1] ? (response[1].data || []) : []
           }
         })
   	}

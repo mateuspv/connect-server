@@ -97,7 +97,17 @@ Search.facebook.profile = map(function (user) {
     cover: user.cover ? user.cover.source : '',
     link: user.link,
   }
-})
+});
+
+Search.facebook.page = map(function (page) {
+   return {
+    id: page.id,
+    name: page.name || '',
+    image: 'http://graph.facebook.com/' + page.id + '/picture',
+    cover: page.cover ? page.cover.source : '',
+    link: page.link,
+  }
+});
 
 var Profile = exports.Profile = {};
 
