@@ -26,17 +26,19 @@ module.exports = {
 	},
 	Search: {
 		query: function (Twitter, options) {
-			var response = [];
 			var type = options.options;
 			var q = options.q;
+			var fakeP = new Promise(function (resolve) {
+				return resolve([]);
+			});
+			var response = [fakeP, fakeP];
 
 			var tweetsOptions = type.filter(function (type) {
 				return type === 'recent' || type === 'popular' || type === 'mixed';
 			});
 
-			if(type.indexOf('twitterUsers') > -1) {
-				var user = Twitter.request({url: 'users/search', options: {q: q}});
-				response = response.concat(user);
+			if(type.indexOf('twitterUser') > -1) {
+				response[0] = Twitter.request({url: 'users/search', options: {q: q}});
 			}
 
 			if(tweetsOptions.length > 0) {
@@ -44,14 +46,16 @@ module.exports = {
 					var query = {q: q, 'result_type': type};
 					return Twitter.request({url: 'search/tweets', options: query});
 				});
-				response = response.concat(tweets);
+				response[1] = tweets;
 			}
 
+			var all = [].concat(response[0], response[1]);
 
-			return Promise.all(response)
+			return Promise.all(all)
 				.then(function (response) {
 					return {
-						profiles: response[0] || [],
+						profiles: (response[0] ? response[0][0] : []) || [],
+						tweets: (response[1] ? response[1].statuses : []) || [],
 	          		}
 	        	});
 		}

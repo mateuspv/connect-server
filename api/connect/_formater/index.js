@@ -88,6 +88,18 @@ Search.twitter.profile = map(function (user) {
     }
 });
 
+Search.twitter.post = map(function (post) {
+    return {
+        id: post.id_str,
+        user: post.user.id_str,
+        message: post.text,
+        favorited: post.favorited,
+        retweeted: post.retweeted,
+        favorite_count: post.favorite_count,
+        retweet_count: post.retweet_count,
+        created_at: post.created_at,
+    };
+});
 
 Search.facebook.profile = map(function (user) {
    return {

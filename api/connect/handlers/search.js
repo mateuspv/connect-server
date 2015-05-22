@@ -40,6 +40,13 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 				var userTwitter = Formater.twitter.profile(twitter.profiles);
 				result.search.user_twitter = userTwitter.map(mapId);
 				result.user_twitter = userTwitter;
+				
+				// all posts
+				var allUsersFromPosts = allUsersFromTweets(twitter.tweets);
+				var allUserPosts = Formater.twitter.post(twitter.tweets);
+				result.user_twitter = result.user_twitter.concat(allUsersFromPosts);
+				result.post_twitter = allUserPosts
+				result.search.post_twitter = allUserPosts.map(mapId);
 			}
 
 			if(searchIncludesNetwork(networks, 'facebook')) {
@@ -73,8 +80,15 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 
 var responseWithSearch = compose(curry(Helpers.responseWith)('search'), curry(Helpers.fromField)('twitter'));
 
-var mapId = function (user) {
-	return user.id;
+var allUsersFromTweets = function (tweets) {
+	var allUsers = tweets.map(function (tweet) {
+		return tweet.user
+	})
+	return Formater.twitter.profile(allUsers);
+}
+
+var mapId = function (data) {
+	return data.id;
 };
 
 var formateResource = function (resource, network, data) {
