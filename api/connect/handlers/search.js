@@ -37,15 +37,25 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 			}
 
 			if(searchIncludesNetwork(networks, 'twitter')) {
+				result.original = twitter.tweets;
+				// profiles
 				var userTwitter = Formater.twitter.profile(twitter.profiles);
 				result.search.user_twitter = userTwitter.map(mapId);
 				result.user_twitter = userTwitter;
+
 				// all posts
 				var allUsersFromPosts = allUsersFromTweets(twitter.tweets);
 				var allUserPosts = Formater.twitter.post(twitter.tweets);
 				result.user_twitter = result.user_twitter.concat(allUsersFromPosts);
 				result.post_twitter = allUserPosts
 				result.search.post_twitter = allUserPosts.map(mapId);
+				
+				// retweets
+				var allRetweets = allRetweetedStatus(twitter.tweets);
+				var allUsersFromRetweetPosts = allUsersFromTweets(allRetweets);
+				var allRetweetPosts = Formater.twitter.post(allRetweets);
+				result.user_twitter = result.user_twitter.concat(allUsersFromRetweetPosts);
+				result.post_twitter = result.post_twitter.concat(allRetweetPosts);
 			}
 
 			if(searchIncludesNetwork(networks, 'facebook')) {
@@ -79,10 +89,20 @@ exports.query = ProxyRequest('base', function (provider, request, reply) {
 
 var responseWithSearch = compose(curry(Helpers.responseWith)('search'), curry(Helpers.fromField)('twitter'));
 
+var retweetedStatus = function (tweet) {
+	return tweet.retweeted_status;
+};
+
+var allRetweetedStatus = function (tweets) {
+	return tweets
+		.filter(retweetedStatus)
+		.map(retweetedStatus)
+}
+
 var allUsersFromTweets = function (tweets) {
 	var allUsers = tweets.map(function (tweet) {
 		return tweet.user
-	})
+	});
 	return Formater.twitter.profile(allUsers);
 }
 
@@ -100,27 +120,3 @@ var formatSearchProfile = curry(formateResource)('profile');
 var searchIncludesNetwork = function (networks, networkName) {
 	return networks.indexOf(networkName) > -1;
 };
-
-var handleTwitter = function (twitter) {
-	var twitterR1 = twitter[0];
-	var twitterR2 = twitter[1];
-	var twitterUser = twitter[2];
-
-	var R1 = [];
-	var R2 = [];
-	var R3 = [];
-
-	if(twitterR1) {
-		R1 = formatSearchPost('twitter', twitterR1['statuses']);
-	}
-
-	if(twitterR2) {
-		R2 = Array.isArray(twitterR2) ? formatSearchProfile('twitter', twitterR2) : formatSearchPost('twitter', twitterR2['statuses']);
-	}
-
-	if(twitterUser) {
-		R3 = Formater.twitter.profile(twitterUser);
-	}
-
-	return [].concat(R1, R2, R3);
-}

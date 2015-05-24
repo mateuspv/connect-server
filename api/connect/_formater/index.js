@@ -89,7 +89,7 @@ Search.twitter.profile = map(function (user) {
 });
 
 Search.twitter.post = map(function (post) {
-    return {
+    var result = {
         id: post.id_str,
         user: post.user.id_str,
         message: post.text,
@@ -98,7 +98,12 @@ Search.twitter.post = map(function (post) {
         favorite_count: post.favorite_count,
         retweet_count: post.retweet_count,
         created_at: post.created_at,
+        link: 'https://twitter.com/' + post.user.screen_name + '/status/' + post.id_str,
     };
+    if(post.retweeted_status) {
+        result.retweet = post.retweeted_status.id_str
+    }
+    return result;
 });
 
 Search.facebook.profile = map(function (user) {
@@ -129,7 +134,7 @@ Search.facebook.group = map(function (group) {
     name: group.name || '',
     icon: group.icon,
     cover: group.cover ? group.cover.source : '',
-    link: 'https://www.facebook.com' + group.id,
+    link: 'https://www.facebook.com/' + group.id,
   }
 });
 
