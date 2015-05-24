@@ -85,6 +85,7 @@ Search.twitter.profile = map(function (user) {
         image: user.profile_image_url,
         bio: user.description || '',
         link: 'https://twitter.com/' + user.screen_name,
+        cover:  user.profile_image_url_https,
     }
 });
 
