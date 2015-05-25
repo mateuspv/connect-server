@@ -202,9 +202,25 @@ var Group = exports.Group = {};
 Group.facebook = function(group) {
     return {
         id: group.id,
+        link: helpers.facebook.profileLink(group.id),
+        cover: group.cover.source,
         icon: group.icon,
         name: group.name,
         description: group.description,
         posts: [],
+        members: [],
     }
+}
+
+Group.member = function(member) {
+    var result = {
+        id: member.id,
+        name: member.first_name,
+        image: helpers.facebook.profileImage(member.id),
+        link: helpers.facebook.profileLink(member.id),
+    };
+    if(member.cover) {
+        result.cover = member.cover.source;
+    }
+    return result;
 }

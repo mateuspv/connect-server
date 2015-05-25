@@ -59,7 +59,7 @@ module.exports = {
   },
   Group: {
     find: function(Facebook, id) {
-      var options = {fields: ['id', 'icon', 'name', 'description', 'feed']};
+      var options = {fields: ['id', 'icon', 'cover', 'name', 'description', 'feed', 'members{cover,first_name,id}']};
       return Facebook.request({url: id, options: options});
     }
   }
