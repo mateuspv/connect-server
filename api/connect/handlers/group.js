@@ -18,8 +18,8 @@ exports.find = ProxyRequest('base', function (provider, request, reply) {
 			group.posts = posts.map(Formater.mapId);
 			
 			reply({
-				group:group,
-				posts: posts,
+				group_facebook:group,
+				post_facebook: posts,
 			})
 		})
 		.catch(function(e) {
