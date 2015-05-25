@@ -21,6 +21,10 @@ helpers.facebook.profileLink = function (id) {
     return 'http://facebook.com/' + id;
 }
 
+exports.mapId = function(collection) {
+    return collection.id
+}
+
 var Post = exports.Post = {};
 
 Post.facebook = map(function(post) {
@@ -85,7 +89,7 @@ Search.twitter.profile = map(function (user) {
         image: user.profile_image_url,
         bio: user.description || '',
         link: 'https://twitter.com/' + user.screen_name,
-        cover:  user.profile_image_url_https,
+        cover: user.profile_image_url_https,
     }
 });
 
@@ -193,3 +197,14 @@ Friends.facebook = map(function (friend) {
         network: 'facebook'
     }
 });
+
+var Group = exports.Group = {};
+Group.facebook = function(group) {
+    return {
+        id: group.id,
+        icon: group.icon,
+        name: group.name,
+        description: group.description,
+        posts: [],
+    }
+}

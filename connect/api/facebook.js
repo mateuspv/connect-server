@@ -56,5 +56,11 @@ module.exports = {
       var options = {limit: 100};
       return Facebook.request({url: 'me/friends', options: options});
     }
+  },
+  Group: {
+    find: function(Facebook, id) {
+      var options = {fields: ['id', 'icon', 'name', 'description', 'feed']};
+      return Facebook.request({url: id, options: options});
+    }
   }
 }

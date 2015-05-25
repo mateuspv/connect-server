@@ -35,6 +35,9 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
     },
     Friends: {
       all: it('Friends', 'all')
+    },
+    Group: {
+      find: it('Group', 'find')
     }
   };
 };

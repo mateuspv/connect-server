@@ -4,6 +4,7 @@ var Post = require('./handlers/post');
 var Search = require('./handlers/search');
 var Profile = require('./handlers/profile');
 var Friends = require('./handlers/friends');
+var Group = require('./handlers/group');
 
 module.exports = [
   {
@@ -54,5 +55,10 @@ module.exports = [
     method: 'GET',
     path: '/connect/friends',
     handler: Friends.all,
-  }
+  },
+  {
+    method: 'GET',
+    path: '/connect/groups/{id}',
+    handler: Group.find
+  },
 ]
