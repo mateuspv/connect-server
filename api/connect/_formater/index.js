@@ -52,8 +52,8 @@ facebook.post.profile = function(post) {
     return {
         id: post.from.id,
         name: post.from.name,
-        image: helpers.facebook.profileImage(post.id),
-        link: helpers.facebook.profileLink(post.id),
+        image: helpers.facebook.profileImage(post.from.id),
+        link: helpers.facebook.profileLink(post.from.id),
     }
 }
 
