@@ -69,10 +69,10 @@ exports.create = ProxyRequest('base', function (provider, request, reply) {
 });
 
 exports.Facebook.like = ProxyRequest('base', function (provider, request, reply) {
-	var post = request.payload.post;
+	var post = request.payload.postFacebook;
 	var postId = request.params.id;
 	var isLiked = !post.like;
-	var Facebook = provider('facebook');
+	var Facebook = provider(['facebook']);
 
 	Facebook.Post.like({id: postId, isLiked: isLiked})
 		.then(function (result) {
