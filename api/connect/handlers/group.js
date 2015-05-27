@@ -15,9 +15,13 @@ exports.find = ProxyRequest('base', function (provider, request, reply) {
 			var data = res[0];
 			var group = Formater.Group.facebook(data);
 			var allUsers = [];
+			var posts = [];
+
 			if(data.feed && data.feed.data) {
-				var posts = extractPosts(data.feed.data);
+				posts = data.feed.data.map(Formater.facebook.post);
 				group.posts = posts.map(Formater.mapId);
+				var allUsersFromPost = data.feed.data.map(Formater.facebook.post.profile)
+				allUsers = allUsers.concat(allUsersFromPost);
 			}
 			if(data.members && data.members.data) {
 				var members = data.members.data.map(Formater.Group.member);
@@ -26,7 +30,7 @@ exports.find = ProxyRequest('base', function (provider, request, reply) {
 			}
 			reply({
 				group_facebook:group,
-				post_facebook: posts || [],
+				post_facebook: posts,
 				user_facebook: allUsers,
 			})
 		})
@@ -35,12 +39,3 @@ exports.find = ProxyRequest('base', function (provider, request, reply) {
 			reply({e:e})
 		})
 });
-
-var extractPosts = function(posts) {
-	return posts.map(function(post) {
-		return {
-			id: post.id,
-			message: post.message,
-		}
-	})
-}

@@ -25,7 +25,41 @@ exports.mapId = function(collection) {
     return collection.id
 }
 
+
+var facebook = exports.facebook = {};
+
+facebook.post = function(post) {
+   return {
+        id: post.id,
+        link: helpers.facebook.profileLink(post.id),
+        story: post.story,
+        picture: post.picture,
+        description: post.picture,
+        external_link: post.link,
+        owner: post.from.id,
+        type: post.type,
+        created_time: post.created_time,
+        message: post.message,
+        like: false,
+   }
+};
+
+facebook.post.profile = function(post) {
+    var response = {};
+    if(post.from.cover) {
+        response.cover = post.from.cover;
+    }
+    return {
+        id: post.from.id,
+        name: post.from.name,
+        image: helpers.facebook.profileImage(post.id),
+        link: helpers.facebook.profileLink(post.id),
+    }
+}
+
+
 var Post = exports.Post = {};
+
 
 Post.facebook = map(function(post) {
   var trySeparateIdFromResource = post.id.split('_');
