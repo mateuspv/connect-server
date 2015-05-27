@@ -23,6 +23,11 @@ module.exports = [
     handler: Post.like
   },
   {
+    method: 'PUT',
+    path: '/connect/posts/facebook/{id}',
+    handler: Post.Facebook.like,
+  },
+  {
     method: 'GET',
     path: '/connect/search',
     handler: Search.query,

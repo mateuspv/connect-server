@@ -59,8 +59,8 @@ module.exports = {
   },
   Group: {
     find: function(Facebook, id) {
-      var options = {fields: ['id', 'icon', 'cover', 'name', 'description', 'feed', 'members{cover,first_name,id}']};
-      return Facebook.request({url: id, options: options});
+      var options = {fields: ['id', 'icon', 'cover', 'name', 'description', 'feed.limit(15)', 'members.limit(50){cover,first_name,id}']};
+      return Facebook.request({url: String(id), options: options});
     }
   }
 }

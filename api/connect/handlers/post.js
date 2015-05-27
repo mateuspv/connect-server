@@ -9,6 +9,7 @@ var curryN = R.curryN;
 /**
  * API 
  */
+exports.Facebook = {};
 
 exports.all = ProxyRequest(function (connect, request, reply) {
   var Posts = connect.Post.all();
@@ -67,6 +68,29 @@ exports.create = ProxyRequest('base', function (provider, request, reply) {
 		})
 });
 
+exports.Facebook.like = ProxyRequest('base', function (provider, request, reply) {
+	var post = request.payload.post;
+	var postId = request.params.id;
+	var isLiked = !post.like;
+	var Facebook = provider('facebook');
+
+	Facebook.Post.like({id: postId, isLiked: isLiked})
+		.then(function (result) {
+			if(isSuccessLikeAction(result, 'facebook')) {
+				reply.statusCode = 200;
+				post.id = postId;
+				return post;
+			}
+			return reply({err: 'facebook internal error'});
+		})
+		.then(curry(responseWith)('post_facebook'))
+		.then(curryN(1, reply))
+		.catch(function (err) {
+			reply.statusCode = 500;
+			reply({err: err})
+		})
+});
+
 /**
  * Private 
  */
@@ -74,6 +98,12 @@ exports.create = ProxyRequest('base', function (provider, request, reply) {
 var responseWithPosts = curry(Helpers.responseWith)('posts');
 
 var applyFormater = curry(Helpers.format)(Formater);
+
+var responseWith = function(field, data) {
+	var response = {};
+	response[field] = data;
+	return response;
+}
 
 var responseWithPost = function (post) {
 	return {posts: post};

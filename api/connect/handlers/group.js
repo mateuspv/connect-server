@@ -14,18 +14,20 @@ exports.find = ProxyRequest('base', function (provider, request, reply) {
 		.then(function(res) {
 			var data = res[0];
 			var group = Formater.Group.facebook(data);
-			var posts = extractPosts(data.feed.data);
-			var members = data.members.data.map(Formater.Group.member);
 			var allUsers = [];
-			group.posts = posts.map(Formater.mapId);
-
-			group.members = members.map(Formater.mapId);
-			allUsers = allUsers.concat(members);
-
+			if(data.feed && data.feed.data) {
+				var posts = extractPosts(data.feed.data);
+				group.posts = posts.map(Formater.mapId);
+			}
+			if(data.members && data.members.data) {
+				var members = data.members.data.map(Formater.Group.member);
+				group.members = members.map(Formater.mapId);
+				allUsers = allUsers.concat(members);
+			}
 			reply({
 				group_facebook:group,
-				post_facebook: posts,
-				user_facebook: allUsers
+				post_facebook: posts || [],
+				user_facebook: allUsers,
 			})
 		})
 		.catch(function(e) {
