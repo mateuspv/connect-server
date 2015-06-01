@@ -65,6 +65,10 @@ module.exports = {
     find: function(Facebook, id) {
       var options = {fields: ['id', 'icon', 'cover', 'name', 'description', 'feed.limit(15)', 'members.limit(50){cover,first_name,id}']};
       return Facebook.request({url: String(id), options: options});
+    },
+    all: function(Facebook) {
+      var options = {fields: ['id', 'cover', 'name', 'icon', 'description']};
+      return Facebook.request({url: '/me/groups', options:options})
     }
   }
 }

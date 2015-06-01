@@ -37,7 +37,8 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
       all: it('Friends', 'all')
     },
     Group: {
-      find: it('Group', 'find')
+      all: it('Group', 'all'),
+      find: it('Group', 'find'),
     },
     Hashtag: {
       all: it('Hashtag', 'all')

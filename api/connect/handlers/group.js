@@ -7,6 +7,17 @@ var curry = R.curry;
 var curryN = R.curryN;
 var compose = R.compose;
 
+exports.all = ProxyRequest('base', function (provider, request, reply) {
+	var Facebook = provider(['facebook']);
+	Facebook.Group.all()
+		.then(compose(
+			Formater.Search.facebook.group,
+			function(data) { return data.facebook },
+			Helpers.extract
+		))
+		.then(curryN(1, reply));
+});
+
 exports.find = ProxyRequest('base', function (provider, request, reply) {
 	var id = request.params.id;
 	var Facebook = provider(['facebook']);

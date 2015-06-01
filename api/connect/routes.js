@@ -64,6 +64,11 @@ module.exports = [
   },
   {
     method: 'GET',
+    path: '/connect/groups',
+    handler: Group.all
+  },
+  {
+    method: 'GET',
     path: '/connect/groups/{id}',
     handler: Group.find
   },
