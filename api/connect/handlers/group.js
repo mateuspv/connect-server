@@ -9,14 +9,16 @@ var compose = R.compose;
 
 exports.all = ProxyRequest('base', function (provider, request, reply) {
 	var Facebook = provider(['facebook']);
+	var response = compose(
+		curry(Helpers.responseWith)('group_facebook'),
+		Formater.Search.facebook.group,
+		function(data) { return data.facebook },
+		Helpers.extract
+	);
+
 	Facebook.Group.all()
-		.then(compose(
-			curry(Helpers.responseWith)('group_facebook'),
-			Formater.Search.facebook.group,
-			function(data) { return data.facebook },
-			Helpers.extract
-		))
-		.then(curryN(1, reply));
+		.then(response)
+		.then(curryN(1, reply))
 });
 
 exports.find = ProxyRequest('base', function (provider, request, reply) {

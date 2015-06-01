@@ -1,14 +1,28 @@
 var Promise = require('es6-promise').Promise;
+var EMPTY_RESPONSE = {data: []};
+
+var alwaysResolveOr = function(promsise, orData) {
+  return new Promise(function(resolve) {
+    promsise.then(function(data) {
+      resolve(data)
+    })
+    .catch(function() {
+      resolve({data: []})
+    });
+  });
+};
 
 module.exports = {
   Post: {
     all: function (Facebook, fields) {
       var options = {fields: ['id', 'full_picture', 'from', 'message', 'link', 'picture', 'description', 'created_time']};
       var feed = Facebook.request({ url: 'me/feed', options: options});
-      var home = Facebook.request({ url: 'me/home', options: options});
+      var homeNews = Facebook.request({ url: 'me/home', options: options});
+      var home = alwaysResolveOr(homeNews, EMPTY_RESPONSE);
+
       return Promise.all([feed, home])
         .then(function (data) {
-          return {feed: data[0], home: data[1]};
+          return {feed: data[0] || [], home: data[1] || []};
         })
     },
     like: function (Facebook, options) {
@@ -68,7 +82,8 @@ module.exports = {
     },
     all: function(Facebook) {
       var options = {fields: ['id', 'cover', 'name', 'icon', 'description']};
-      return Facebook.request({url: '/me/groups', options:options})
+      var promise = Facebook.request({url: '/me/groups', options:options});
+      return alwaysResolveOr(promise, EMPTY_RESPONSE)
     }
   }
 }
