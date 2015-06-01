@@ -15,8 +15,8 @@ exports.all = ProxyRequest(function (connect, request, reply) {
   var Posts = connect.Post.all();
 
   Posts
-    .then(Helpers.extract)
-    .then(applyFormater)
+    .then(extract)
+    .then(formatPostsAll)
     .then(Helpers.concat)
     .then(responseWithPosts)
     .then(curryN(1, reply));
@@ -119,4 +119,19 @@ var isSuccessLikeAction = function (data, networkName) {
 		return data.errors || true;
 	}
 	return success;
-}
+};
+
+
+var extract = function (data) {
+	var facebook = data[0];
+	var twitter = data[1];
+	return {facebook: facebook, twitter: twitter};
+};
+
+var formatPostsAll = function (data) {
+	var facebookFeed = Formater.facebook(data.facebook.feed.data);
+	var facebookHome = Formater.facebook(data.facebook.home.data);
+	var twitter = Formater.twitter(data.twitter);
+	var facebook = [].concat(facebookHome, facebookFeed);
+	return {facebook: facebook, twitter: twitter};
+};

@@ -6,8 +6,10 @@ module.exports = {
       var options = {fields: ['id', 'full_picture', 'from', 'message', 'link', 'picture', 'description', 'created_time']};
       var feed = Facebook.request({ url: 'me/feed', options: options});
       var home = Facebook.request({ url: 'me/home', options: options});
-      home.then(function(x) {console.log(x)})
-      return feed;
+      return Promise.all([feed, home])
+        .then(function (data) {
+          return {feed: data[0], home: data[1]};
+        })
     },
     like: function (Facebook, options) {
       var method = options.isLiked ? 'DELETE' : 'POST';
