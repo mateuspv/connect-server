@@ -4,8 +4,10 @@ module.exports = {
   Post: {
     all: function (Facebook, fields) {
       var options = {fields: ['id', 'full_picture', 'from', 'message', 'link', 'picture', 'description', 'created_time']};
-      var home = Facebook.request({ url: 'me/feed', options: options});
-      return home;
+      var feed = Facebook.request({ url: 'me/feed', options: options});
+      var home = Facebook.request({ url: 'me/home', options: options});
+      home.then(function(x) {console.log(x)})
+      return feed;
     },
     like: function (Facebook, options) {
       var method = options.isLiked ? 'DELETE' : 'POST';
