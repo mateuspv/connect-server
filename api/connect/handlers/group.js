@@ -11,6 +11,7 @@ exports.all = ProxyRequest('base', function (provider, request, reply) {
 	var Facebook = provider(['facebook']);
 	Facebook.Group.all()
 		.then(compose(
+			curry(responseWith)('group_facebook'),
 			Formater.Search.facebook.group,
 			function(data) { return data.facebook },
 			Helpers.extract
