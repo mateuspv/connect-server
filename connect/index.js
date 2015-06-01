@@ -38,6 +38,9 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
     },
     Group: {
       find: it('Group', 'find')
+    },
+    Hashtag: {
+      all: it('Hashtag', 'all')
     }
   };
 };

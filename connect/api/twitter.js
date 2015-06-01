@@ -88,5 +88,12 @@ module.exports = {
 					return Twitter.request({url: 'friendships/lookup', options: options});
 				});
   		}
+  	},
+  	Hashtag: {
+  		all: function(Twitter) {
+  			//Global information is available by using 1 as the WOEID.
+  			var options = {id: '1'};
+  			return Twitter.request({url: 'trends/place', options: options});
+  		}
   	}
 };

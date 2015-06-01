@@ -5,6 +5,7 @@ var Search = require('./handlers/search');
 var Profile = require('./handlers/profile');
 var Friends = require('./handlers/friends');
 var Group = require('./handlers/group');
+var Hashtag = require('./handlers/hashtag');
 
 module.exports = [
   {
@@ -65,5 +66,10 @@ module.exports = [
     method: 'GET',
     path: '/connect/groups/{id}',
     handler: Group.find
+  },
+  {
+    method: 'GET',
+    path: '/connect/hashtags',
+    handler: Hashtag.all
   },
 ]

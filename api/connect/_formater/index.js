@@ -258,3 +258,11 @@ Group.member = function(member) {
     }
     return result;
 }
+
+var Hashtag = exports.Hashtag = {};
+
+Hashtag.apply = function(hashtag) {
+    return {
+        hashtag: hashtag.name
+    };
+}
