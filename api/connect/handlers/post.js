@@ -95,7 +95,7 @@ exports.Facebook.like = ProxyRequest('base', function (provider, request, reply)
 });
 
 exports.Twitter.retweetORStar = ProxyRequest('base', function (provider, request, reply) {
-	var post = request.payload.post_twitter;
+	var post = request.payload.postTwitter;
 	var postId = request.params.id;
 	var change = post.changes;
 	var isFavorited = !post.favorited;
