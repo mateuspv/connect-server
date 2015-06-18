@@ -32,7 +32,8 @@ module.exports = {
     },
     create: function (Facebook, options) {
       return Facebook.request({url: 'me/feed', method: 'POST', options: options});
-    }
+    },
+    retweet: function(Facebook, options) {},
   },
   Search: {
   	query: function (Facebook, options) {

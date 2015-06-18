@@ -20,6 +20,7 @@ var NetworkBuilder = function (networksNames, Keys, providers, api) {
       all: it('Post', 'all'),
       like: it('Post', 'like'),
       create: it('Post', 'create'),
+      retweet: it('Post', 'retweet'),
     },
     Like: {
       create: it('Like', 'create')

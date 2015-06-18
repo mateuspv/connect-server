@@ -1,3 +1,5 @@
+var Promise = require('es6-promise').Promise;
+
 var ProxyRequest = require('./_handler');
 var Formater = require('./../_formater/index').Post;
 var Helpers = require('./_helpers');
@@ -10,6 +12,7 @@ var curryN = R.curryN;
  * API 
  */
 exports.Facebook = {};
+exports.Twitter = {};
 
 exports.all = ProxyRequest(function (connect, request, reply) {
   var Posts = connect.Post.all();
@@ -89,6 +92,30 @@ exports.Facebook.like = ProxyRequest('base', function (provider, request, reply)
 			reply.statusCode = 500;
 			reply({err: err})
 		})
+});
+
+exports.Twitter.retweetORStar = ProxyRequest('base', function (provider, request, reply) {
+	var post = request.payload.post_twitter;
+	var postId = request.params.id;
+	var change = post.changes;
+	var isFavorited = !post.favorited;
+	var Twitter = provider(['twitter']);
+	var response = '';
+
+	if(change === 'favorited') {
+		response = Twitter.Post.like({id: postId, isLiked: isFavorited})
+	}
+	else if(change === 'retweeted') {
+		response = Twitter.Post.retweet({id: postId});
+	}
+	else {
+		response = Promise.resolve(post);
+	}
+
+	response.then(function() {
+		post.id = postId;
+		reply(post);		
+	})
 });
 
 /**

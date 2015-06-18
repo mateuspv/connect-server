@@ -29,6 +29,11 @@ module.exports = [
     handler: Post.Facebook.like,
   },
   {
+    method: 'PUT',
+    path: '/connect/posts/twitter/{id}',
+    handler: Post.Twitter.retweetORStar,
+  },
+  {
     method: 'GET',
     path: '/connect/search',
     handler: Search.query,

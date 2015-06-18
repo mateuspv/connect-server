@@ -14,6 +14,10 @@ module.exports = {
 			var options = {id: options.id};
 			return Twitter.request({url: url, method: 'POST', options: options});
 		},
+		retweet: function (Twitter, options) {
+			var url = 'statuses/retweet/' + options.id;
+			return Twitter.request({url: url, method: 'POST'});
+		},
 		create: function (Twitter, options) {
 			var opts = {status: options.message};
 			return Twitter.request({ url: "statuses/update", method: 'POST', options: opts});
