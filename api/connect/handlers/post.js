@@ -31,6 +31,7 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 	var postId = request.params.id;
 	var isLiked = !post.user_likes;
 	var Network = provider([networkName]);
+	var change = post.changes;
 	
 	if(change === 'favorited') {
 		Network.Post.like({id: postId, isLiked: isLiked})
