@@ -31,22 +31,32 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 	var postId = request.params.id;
 	var isLiked = !post.user_likes;
 	var Network = provider([networkName]);
-
-	Network.Post.like({id: postId, isLiked: isLiked})
-		.then(function (result) {
-			if(isSuccessLikeAction(result, networkName)) {
+	
+	if(change === 'favorited') {
+		Network.Post.like({id: postId, isLiked: isLiked})
+			.then(function (result) {
+				if(isSuccessLikeAction(result, networkName)) {
+					reply.statusCode = 200;
+					post.id = postId;
+					return post;
+				}
+				return reply({});
+			})
+			.then(responseWithPost)
+			.then(curryN(1, reply))
+			.catch(function (err) {
+				reply.statusCode = 500;
+				reply({err: err})
+			})
+	}
+	else if(change === 'retweeted') {
+		Twitter.Post.retweet({id: postId})
+			.then(function() {
 				reply.statusCode = 200;
 				post.id = postId;
-				return post;
-			}
-			return reply({});
-		})
-		.then(responseWithPost)
-		.then(curryN(1, reply))
-		.catch(function (err) {
-			reply.statusCode = 500;
-			reply({err: err})
-		})
+				reply(post);
+			})
+	}
 });
 
 exports.create = ProxyRequest('base', function (provider, request, reply) {
@@ -107,6 +117,7 @@ exports.Twitter.retweetORStar = ProxyRequest('base', function (provider, request
 	}
 	else if(change === 'retweeted') {
 		response = Twitter.Post.retweet({id: postId});
+
 	}
 	else {
 		response = Promise.resolve(post);
