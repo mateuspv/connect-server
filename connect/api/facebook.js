@@ -16,11 +16,9 @@ module.exports = {
   Post: {
     all: function (Facebook, fields) {
       var options = {fields: ['id', 'full_picture', 'from', 'message', 'link', 'picture', 'description', 'created_time']};
-      var feed = Facebook.request({ url: 'me/feed', options: options});
       var homeNews = Facebook.request({ url: 'me/home', options: options});
       var home = alwaysResolveOr(homeNews, EMPTY_RESPONSE);
-
-      return Promise.all([feed, home])
+      return Promise.all([[], home])
         .then(function (data) {
           return {feed: data[0] || [], home: data[1] || []};
         })
