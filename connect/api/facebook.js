@@ -19,7 +19,7 @@ module.exports = {
       var homeNews = Facebook.request({ url: 'me/home', options: options});
       var feed = Facebook.request({ url: 'me/feed', options: options});
       var home = alwaysResolveOr(homeNews, EMPTY_RESPONSE);
-      return Promise.all(feed, home])
+      return Promise.all([feed, home])
         .then(function (data) {
           return {feed: data[0] || [], home: data[1] || []};
         })
