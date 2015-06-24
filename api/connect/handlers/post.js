@@ -30,10 +30,11 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 	var networkName = post.network;
 	var postId = request.params.id;
 	var isLiked = !post.user_likes;
-	var Network = provider([networkName]);
 	var change = post.changes;
+	var Network;
 	
 	if(change === 'favorited') {
+		Network = provider([networkName]);
 		Network.Post.like({id: postId, isLiked: isLiked})
 			.then(function (result) {
 				if(isSuccessLikeAction(result, networkName)) {
@@ -51,7 +52,8 @@ exports.like = ProxyRequest('base', function (provider, request, reply) {
 			})
 	}
 	else if(change === 'retweeted') {
-		Twitter.Post.retweet({id: postId})
+		Network = provider(['twitter']);
+		Network.Post.retweet({id: postId})
 			.then(function() {
 				reply.statusCode = 200;
 				post.id = postId;
